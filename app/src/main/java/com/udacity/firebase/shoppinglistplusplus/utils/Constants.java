@@ -11,7 +11,8 @@ public final class Constants {
      * Constants related to locations in Firebase, such as the name of the node
      * where active lists are stored (ie "activeLists")
      */
-
+    public static final String FIREBASE_LOCATION_ACTIVE_LIST = "activeLists";
+    public static final String FIREBASE_URL_ACTIVE_LIST = "https://udacity-ptr.firebaseio.com/activeList";
 
     /**
      * Constants for Firebase object properties

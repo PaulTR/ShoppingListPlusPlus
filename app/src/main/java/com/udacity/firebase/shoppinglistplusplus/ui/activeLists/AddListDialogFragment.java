@@ -94,10 +94,10 @@ public class AddListDialogFragment extends DialogFragment {
     public void addShoppingList() {
         Firebase ref = new Firebase(Constants.FIREBASE_URL);
 
-        ShoppingList list = new ShoppingList();
-        list.setListName(mEditTextListName.getText().toString());
-        list.setOwner("Paul");
+        ShoppingList list = new ShoppingList(mEditTextListName.getText().toString(), "Paul");
         ref.child("activeList").setValue(list);
+        //list.setListName(mEditTextListName.getText().toString());
+        //list.setOwner("Paul");
         //ref.child("listName").setValue(mEditTextListName.getText().toString());
     }
 

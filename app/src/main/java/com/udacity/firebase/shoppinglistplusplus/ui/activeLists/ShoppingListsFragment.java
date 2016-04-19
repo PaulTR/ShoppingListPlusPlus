@@ -13,10 +13,14 @@ import android.widget.TextView;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ServerValue;
 import com.firebase.client.ValueEventListener;
 import com.udacity.firebase.shoppinglistplusplus.R;
 import com.udacity.firebase.shoppinglistplusplus.model.ShoppingList;
 import com.udacity.firebase.shoppinglistplusplus.utils.Constants;
+import com.udacity.firebase.shoppinglistplusplus.utils.Utils;
+
+import java.util.Date;
 
 
 /**
@@ -28,6 +32,7 @@ public class ShoppingListsFragment extends Fragment {
     private ListView mListView;
     private TextView mTextViewListName;
     private TextView mTextViewOwner;
+    private TextView mTextViewTime;
 
     public ShoppingListsFragment() {
         /* Required empty public constructor */
@@ -87,7 +92,16 @@ public class ShoppingListsFragment extends Fragment {
                 if (list != null) {
                     mTextViewListName.setText(list.getListName());
                     mTextViewOwner.setText(list.getOwner());
+
+                    if (list.getTimestampLastChanged() != null) {
+                        mTextViewTime.setText(
+                                Utils.SIMPLE_DATE_FORMAT.format(
+                                        new Date(list.getTimestampLastChangedLong())));
+                    } else {
+                        mTextViewTime.setText("");
+                    }
                 }
+
             }
 
             @Override
@@ -112,5 +126,6 @@ public class ShoppingListsFragment extends Fragment {
         mListView = (ListView) rootView.findViewById(R.id.list_view_active_lists);
         mTextViewListName = (TextView) rootView.findViewById(R.id.text_view_list_name);
         mTextViewOwner = (TextView) rootView.findViewById(R.id.text_view_created_by_user);
+        mTextViewTime = (TextView) rootView.findViewById( R.id.text_view_edit_time);
     }
 }

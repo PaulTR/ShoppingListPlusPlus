@@ -4,10 +4,16 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+
     defaultConfig {
         applicationId "com.udacity.firebase.shoppinglistplusplus"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -19,6 +25,10 @@ android {
         debug {
 
         }
+    }
+
+    buildTypes.each{
+        it.buildConfigField 'String','UNIQUE_FIREBASE_ROOT_URL', UniqueFirebaseRootUrl
     }
 
 }
@@ -33,4 +43,6 @@ dependencies {
     /* For Google Play Services */
     compile 'com.google.android.gms:play-services-safetynet:8.3.0'
     compile 'com.google.android.gms:play-services-auth:8.3.0'
+
+    compile 'com.firebase:firebase-client-android:2.4.0'
 }

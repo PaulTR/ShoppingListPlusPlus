@@ -8,8 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.udacity.firebase.shoppinglistplusplus.R;
+import com.udacity.firebase.shoppinglistplusplus.model.ShoppingList;
+import com.udacity.firebase.shoppinglistplusplus.utils.Constants;
 
 
 /**
@@ -19,6 +26,8 @@ import com.udacity.firebase.shoppinglistplusplus.R;
  */
 public class ShoppingListsFragment extends Fragment {
     private ListView mListView;
+    private TextView mTextViewListName;
+    private TextView mTextViewOwner;
 
     public ShoppingListsFragment() {
         /* Required empty public constructor */
@@ -57,7 +66,7 @@ public class ShoppingListsFragment extends Fragment {
         /**
          * Initalize UI elements
          */
-        View rootView = inflater.inflate(R.layout.fragment_shopping_lists, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_shopping_lists, container, false);
         initializeScreen(rootView);
 
         /**
@@ -66,6 +75,23 @@ public class ShoppingListsFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
+        Firebase ref = new Firebase(Constants.FIREBASE_URL).child("activeList");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ShoppingList list = dataSnapshot.getValue(ShoppingList.class);
+                if (list != null) {
+                    mTextViewListName.setText(list.getListName());
+                    mTextViewOwner.setText(list.getOwner());
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
 
             }
         });
@@ -84,5 +110,7 @@ public class ShoppingListsFragment extends Fragment {
      */
     private void initializeScreen(View rootView) {
         mListView = (ListView) rootView.findViewById(R.id.list_view_active_lists);
+        mTextViewListName = (TextView) rootView.findViewById(R.id.text_view_list_name);
+        mTextViewOwner = (TextView) rootView.findViewById(R.id.text_view_created_by_user);
     }
 }

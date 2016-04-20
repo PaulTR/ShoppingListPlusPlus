@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
+import com.firebase.client.Firebase;
 import com.udacity.firebase.shoppinglistplusplus.R;
 import com.udacity.firebase.shoppinglistplusplus.model.ShoppingList;
+import com.udacity.firebase.shoppinglistplusplus.utils.Constants;
 
 /**
  * Lets the user remove active shopping list
@@ -18,9 +20,10 @@ public class RemoveListDialogFragment extends DialogFragment {
     /**
      * Public static constructor that creates fragment and passes a bundle with data into it when adapter is created
      */
-    public static RemoveListDialogFragment newInstance(ShoppingList shoppingList) {
+    public static RemoveListDialogFragment newInstance(ShoppingList shoppingList, String listId) {
         RemoveListDialogFragment removeListDialogFragment = new RemoveListDialogFragment();
         Bundle bundle = new Bundle();
+        bundle.putString("key", listId);
         removeListDialogFragment.setArguments(bundle);
         return removeListDialogFragment;
     }
@@ -42,6 +45,7 @@ public class RemoveListDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         removeList();
                         /* Dismiss the dialog */
+                        onActivityResult(0, getActivity().RESULT_OK, null);
                         dialog.dismiss();
                     }
                 })
@@ -59,6 +63,9 @@ public class RemoveListDialogFragment extends DialogFragment {
     private void removeList() {
         // TODO Here is the method that is called when the user selects yes, they want to
         // remove a list.
+
+        Firebase ref = new Firebase(Constants.FIREBASE_URL_ACTIVE_LISTS).child(getArguments().getString("key"));
+        ref.removeValue();
 
     }
 

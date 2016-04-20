@@ -221,8 +221,17 @@ public class ActiveListDetailsActivity extends BaseActivity {
      */
     public void removeList() {
         /* Create an instance of the dialog fragment and show it */
-        DialogFragment dialog = RemoveListDialogFragment.newInstance(mShoppingList);
+        DialogFragment dialog = RemoveListDialogFragment.newInstance(mShoppingList, mListId);
         dialog.show(getFragmentManager(), "RemoveListDialogFragment");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if( resultCode == RESULT_OK ) {
+            finish();
+        }
     }
 
     /**
